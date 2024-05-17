@@ -1,0 +1,9 @@
+spring:
+  application:
+    name: cry-engine
+
+logging:
+  level:
+    sql: info
+    root: info
+    web: info
