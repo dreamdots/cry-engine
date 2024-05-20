@@ -7,5 +7,6 @@ services:
       dockerfile: Dockerfile
     ports:
       - "8181:8181"
+    restart: always
     environment:
       - SERVER_PORT= 8181
