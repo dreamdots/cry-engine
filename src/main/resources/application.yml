@@ -1,6 +1,9 @@
 spring:
   application:
     name: cry-engine
+  profiles:
+    active:
+      - feature-toggles
 
 server:
   port: 8181
@@ -10,3 +13,5 @@ logging:
     sql: info
     root: info
     web: info
+
+
