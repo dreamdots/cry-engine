@@ -1,0 +1,106 @@
+spring:
+  application:
+    name: engine-candle-processor
+
+  profiles:
+    active: feature-toggle, tinkoff, kafka
+
+  main:
+    allow-bean-definition-overriding: true
+
+  kafka:
+    consumer:
+      bootstrap-servers: localhost:9092
+      group-id: ${spring.application.name}
+
+  r2dbc:
+    url: r2dbc:postgresql://localhost:5432/${spring.application.name}
+    username: postgres
+    password: A123456b
+
+  liquibase:
+    change-log: classpath*:/liquibase/changelog-master.xml
+
+  cloud:
+    loadbalancer:
+      clients:
+        engine-notification-service:
+          cache:
+            enabled: true
+            ttl: 2
+
+          health-check:
+            interval: 2
+            refetch-instances-interval: 2
+            initial-delay: 0
+
+          retry:
+            avoid-previous-instance: true
+            enabled: true
+            max-retries-on-same-service-instance: 0
+            max-retries-on-next-service-instance: 1
+            retry-on-all-exceptions: true
+            retry-on-all-operations: true
+
+          stats:
+            micrometer:
+              enabled: true
+
+eureka:
+  client:
+    # Через сколько после запуска отправится первое сообщение на сервер
+    initial-instance-info-replication-interval-seconds: 0
+    fetch-registry: true
+    should-enforce-registration-at-init: false
+    filter-only-up-instances: true
+    instance-info-replication-interval-seconds: 2
+  instance:
+    instance-id: ${random.uuid}
+    # Через какое время текущий сервер считается мертвым
+    lease-expiration-duration-in-seconds: 5
+    # Интервал отправки heartbeat сообщений
+    lease-renewal-interval-in-seconds: 1
+
+server:
+  port: 0
+
+tinkoff:
+  auth-token: t.pcGv22fwcTAG6STjZwlFCBduBNpsjitVzrfcl4erDm97XPF27ZarS7yz9qPNPH3nkKt-woBYEIqfQGWtXpNFEw
+  is-sand-box-mode: true
+  retry-count: 5
+  api-timeout: 10000
+  retry-interval: 100
+
+propagation:
+  filters:
+    trace-id:
+      enabled: true
+      order: 0
+    logging:
+      enabled: true
+      order: 1
+
+engine:
+  scheduler:
+    pools:
+      candle-cache-worker:
+        min-count: 4
+        percentage: 25
+        parallel: false
+      candle-processor-worker:
+        min-count: 4
+        percentage: 50
+        parallel: true
+
+  candle-consumer:
+    candle-topic: candle-processor-001
+
+  candle-cache:
+    max-size: 5000
+    meta-cache-ttl-hours: 24
+
+logging:
+  level:
+    org:
+      springframework:
+        cloud: debug

@@ -1,8 +1,0 @@
-version: '3.8'
-services:
-  cry-engine:
-    image: cry-engine:latest
-    ports:
-      - "8181:8181"
-    environment:
-      - SERVER_PORT= 8181

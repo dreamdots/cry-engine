@@ -1,0 +1,81 @@
+spring:
+  application:
+    name: engine-candle-consumer
+
+  main:
+    allow-bean-definition-overriding: true
+
+  profiles:
+    active: feature-toggle, tinkoff, kafka
+
+  kafka:
+    producer:
+      bootstrap-servers: localhost:9092
+
+eureka:
+  client:
+    # Через сколько после запуска отправится первое сообщение на сервер
+    initial-instance-info-replication-interval-seconds: 0
+    fetch-registry: true
+    should-enforce-registration-at-init: false
+    filter-only-up-instances: true
+    instance-info-replication-interval-seconds: 2
+  instance:
+    instance-id: ${random.uuid}
+    # Через какое время текущий сервер считается мертвым
+    lease-expiration-duration-in-seconds: 5
+    # Интервал отправки heartbeat сообщений
+    lease-renewal-interval-in-seconds: 1
+
+server:
+  port: 0
+
+tinkoff:
+  auth-token: t.pcGv22fwcTAG6STjZwlFCBduBNpsjitVzrfcl4erDm97XPF27ZarS7yz9qPNPH3nkKt-woBYEIqfQGWtXpNFEw
+  is-sand-box-mode: false
+  retry-count: 5
+  api-timeout: 10000
+  retry-interval: 100
+
+propagation:
+  filters:
+    trace-id:
+      enabled: true
+      order: 0
+    logging:
+      enabled: true
+      order: 1
+
+engine:
+  scheduler:
+    pools:
+      candle-processor-worker:
+        min-count: 4
+        percentage: 50
+        parallel: true
+
+  candle-consumer:
+    candle-topic: candle-processor-001
+    streams:
+      currencies:
+        enabled: false
+        figis:
+          - BBG0013HRTL0
+          - BBG0013J12N1
+          - BBG00D87WQY7
+          - BBG0013J7V24
+          - BBG0013J11P1
+          - BBG0013J7Y00
+          - BBG0013HG026
+          - BBG000VHQTD1
+          - BBG000VJ5YR4
+          - BBG0013HGFT4
+          - BBG0013HSW87
+      shares:
+        enabled: true
+        figis:
+          - BBG004730RP0
+          - BBG004S681B4
+          - BBG004730N88
+          - BBG0047315Y7
+          - BBG004RVFCY3

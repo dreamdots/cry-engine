@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                            https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.9.xsd">
+
+    <changeSet id="27052024-1" author="Aleksandr Dotsenko">
+        <comment>Create table 'candle'</comment>
+        <createTable tableName="candle">
+            <column name="id" autoIncrement="true" type="bigint"/>
+            <column name="figi" type="text"/>
+            <column name="channel" type="text"/>
+            <column name="version" type="bigint"/>
+            <column name="highest_price" type="decimal"/>
+            <column name="lowest_price" type="decimal"/>
+            <column name="open_price" type="decimal"/>
+            <column name="closing_price" type="decimal"/>
+            <column name="interval" type="text"/>
+            <column name="date_time" type="datetime"/>
+        </createTable>
+
+        <addUniqueConstraint tableName="candle" columnNames="figi,channel,interval,date_time"/>
+    </changeSet>
+</databaseChangeLog>

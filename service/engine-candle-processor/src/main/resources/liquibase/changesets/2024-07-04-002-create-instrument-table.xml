@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                            https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.9.xsd">
+
+    <changeSet id="28052024-1" author="Aleksandr Dotsenko">
+        <comment>Create table 'instrument'</comment>
+        <createTable tableName="instrument">
+            <column name="id" autoIncrement="true" type="bigint"/>
+            <column name="figi" type="text"/>
+            <column name="uid" type="text"/>
+            <column name="name" type="text"/>
+            <column name="lot" type="bigint"/>
+            <column name="avail_in_weekend" type="boolean"/>
+            <column name="type" type="text"/>
+            <column name="currency" type="text"/>
+            <column name="ticker" type="text"/>
+            <column name="avail_for_iis" type="boolean"/>
+            <column name="only_for_qual" type="boolean"/>
+        </createTable>
+
+        <addUniqueConstraint tableName="instrument" columnNames="figi"/>
+        <addUniqueConstraint tableName="instrument" columnNames="uid"/>
+    </changeSet>
+</databaseChangeLog>

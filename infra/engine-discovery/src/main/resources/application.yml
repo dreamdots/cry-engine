@@ -1,0 +1,12 @@
+spring:
+  application:
+    name: engine-discovery
+
+server:
+  port: 8761
+
+logging:
+  level:
+    org:
+      springframework:
+        cloud: debug

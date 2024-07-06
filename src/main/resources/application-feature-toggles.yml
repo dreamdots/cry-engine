@@ -1,5 +1,0 @@
-features:
-  test_feature:
-    is-enabled: true
-    description: Фича для теста работы тоглов
-    used-in: PingController

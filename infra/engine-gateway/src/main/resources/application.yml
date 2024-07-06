@@ -1,0 +1,78 @@
+spring:
+  application:
+    name: engine-gateway
+
+  cloud:
+    loadbalancer:
+      cache:
+        enabled: true
+        ttl: 2
+
+      health-check:
+        interval: 2
+        refetch-instances-interval: 2
+        initial-delay: 0
+
+      retry:
+        avoid-previous-instance: true
+        enabled: true
+        max-retries-on-same-service-instance: 0
+        max-retries-on-next-service-instance: 1
+        retry-on-all-exceptions: true
+        retry-on-all-operations: true
+
+      stats:
+        micrometer:
+          enabled: true
+
+    gateway:
+      metrics:
+        enabled: true
+
+      discovery:
+        locator:
+          enabled: true
+
+      filter:
+        retry:
+          enabled: true
+
+      routes:
+        - id: engine-candle-processor
+          uri: lb://engine-candle-processor
+          predicates:
+            - Path=/api/v1/candle/processor/**
+        - id: engine-notification-service
+          uri: lb://engine-notification-service
+          predicates:
+            - Path=/api/v1/notification/**
+
+eureka:
+  client:
+    # ????? ??????? ????? ??????? ?????????? ?????? ????????? ?? ??????
+    initial-instance-info-replication-interval-seconds: 0
+    fetch-registry: true
+    should-enforce-registration-at-init: false
+    filter-only-up-instances: true
+    instance-info-replication-interval-seconds: 2
+  instance:
+    instance-id: ${random.uuid}
+    # ????? ????? ????? ??????? ?????? ????????? ???????
+    lease-expiration-duration-in-seconds: 5
+    # ???????? ???????? heartbeat ?????????
+    lease-renewal-interval-in-seconds: 1
+
+propagation:
+  filters:
+    trace-id:
+      enabled: true
+      order: 0
+    logging:
+      enabled: true
+      order: 1
+
+logging:
+  level:
+    org:
+      springframework:
+        cloud: debug

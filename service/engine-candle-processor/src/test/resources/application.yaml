@@ -1,0 +1,61 @@
+spring:
+  application:
+    name: ccp-${random.uuid}
+
+  main:
+    allow-bean-definition-overriding: true
+
+  r2dbc:
+    url: r2dbc:postgresql://localhost:5432/engine-candle-processor
+    username: postgres
+    password: A123456b
+
+  liquibase:
+    change-log: classpath*:/liquibase/changelog-master.xml
+
+eureka:
+  client:
+    # Через сколько после запуска отправится первое сообщение на сервер
+    initial-instance-info-replication-interval-seconds: 5
+  instance:
+    instance-id: ${random.uuid}
+    # Через какое время текущий сервер считается мертвым
+    lease-expiration-duration-in-seconds: 10
+    # Интервал отправки heartbeat сообщений
+    lease-renewal-interval-in-seconds: 1
+
+server:
+  port: 0
+
+propagation:
+  filters:
+    trace-id:
+      enabled: true
+      order: 0
+    logging:
+      enabled: true
+      order: 1
+
+engine:
+  scheduler:
+    pools:
+      candle-cache-worker:
+        min-count: 4
+        percentage: 25
+        parallel: false
+      candle-processor-worker:
+        min-count: 4
+        percentage: 50
+        parallel: true
+
+  candle-cache:
+    max-size: 5000
+    meta-cache-ttl-hours: 24
+
+logging:
+  level:
+    ru:
+      adotsenko:
+        engine:
+          candle:
+            processor: debug
